@@ -1,56 +1,51 @@
 <?php
-// Database connection
+session_start();
 $servername = "localhost";
-$username = "root"; // XAMPP default MySQL username
-$password = ""; // XAMPP default MySQL password
-$database = "payslipproject"; // Name of your database
+$username = "root"; // Your MySQL username
+$password = ""; // Your MySQL password
+$dbname = "payslipproject"; // Your Database Name
 
-// Create a connection
-$conn = new mysqli($servername, $username, $password, $database);
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check if the connection was successful
+// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Validate email format
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo "Invalid email format";
-        exit();
-    }
-
-    // Prepare SQL query to check for matching email
-    $sql = "SELECT * FROM users WHERE makerereEmail = '$email'";
-
+    // Prevent SQL Injection
+    $email = $conn->real_escape_string($email);
+    
+    // Fetch user data
+    $sql = "SELECT id, password, role FROM users WHERE makerereEmail = '$email' OR personalEmail = '$email'";
     $result = $conn->query($sql);
 
-    if ($result->num_rows > 0) {
-        // User found, verify password
+    if ($result->num_rows == 1) {
         $row = $result->fetch_assoc();
         
-        // Check if password matches
+        // Verify password (if using hashed passwords)
         if (password_verify($password, $row['password'])) {
-            // Password matches, allow login
-            session_start();
-            $_SESSION['user_id'] = $row['id']; // Store user ID in session
-            $_SESSION['user_email'] = $row['makerereEmail']; // Store email in session
-            
-            // Redirect to the Dashboard
-            header("Location: Dashboard.html");
+            $_SESSION['user_id'] = $row['id'];
+            $_SESSION['role'] = $row['role'];
+
+            // Redirect based on role
+            if ($row['role'] == 'admin') {
+                header("Location: adminDashboard.php");
+            } else {
+                header("Location: userDashboard.php");
+            }
             exit();
         } else {
-            echo "Incorrect password.";
+            echo "Invalid password.";
         }
     } else {
-        echo "No user found with this email.";
+        echo "User not found.";
     }
 }
 
-// Close the connection
 $conn->close();
 ?>
