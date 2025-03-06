@@ -1,3 +1,25 @@
+<?php
+session_start();
+
+// Check if the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: index.html"); // Redirect to login page if not logged in
+    exit();
+}
+
+// Set session timeout (in seconds)
+$timeout_duration = 600; // 10 minutes
+
+if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > $timeout_duration)) {
+    session_unset(); // Unset session variables
+    session_destroy(); // Destroy session
+    header("Location: index.html"); // Redirect to login page
+    exit();
+}
+
+$_SESSION['LAST_ACTIVITY'] = time(); // Update last activity time
+?>
+
 <!DOCTYPE html>
 <html>
 <head>

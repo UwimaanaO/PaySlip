@@ -1,5 +1,24 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start(); // Start the session only if it's not already started
+}
+
+// Set session timeout (in seconds)
+$timeout_duration = 600; // 10 minutes
+
+if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > $timeout_duration)) {
+    session_unset(); // Unset session variables
+    session_destroy(); // Destroy session
+    header("Location: index.html"); // Redirect to login page
+    exit();
+}
+
+$_SESSION['LAST_ACTIVITY'] = time(); // Update last activity time
+?>
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start(); // Start the session only if it's not already started
+}
 
 // Check if the user is logged in and is an admin
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
@@ -7,6 +26,18 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     exit();
 }
 ?>
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start(); // Start the session only if it's not already started
+}
+
+// Check if the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: index.html"); // Redirect to login page if not logged in
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -198,7 +229,7 @@ a.article:hover {
     <nav id="sidebar">
         <div class="sidebar-header">
           <img src="makerere_logo-removebg-preview.png" class="mx-auto d-block" style="width:80px">
-          <div class="line"></div>
+          <hr>
         </div>
 
         <ul class="list-unstyled components">
@@ -211,13 +242,13 @@ a.article:hover {
                 </a>
                 <ul class="collapse list-unstyled" id="pageSubmenu">
                     <li>
-                        <a href="viewUsers.php"><i class="fas fa-user-edit"></i> View Users</a>
+                        <a href="editUserProfile.html"><i class="fas fa-user-edit"></i> View Users</a>
                     </li>
                     <li>
-                        <a href="addAdmin.html"><i class="fas fa-users"></i> Add Admin</a>
+                        <a href="viewUsers.html"><i class="fas fa-users"></i> Add Admin</a>
                     </li>
                     <li>
-                        <a href="uploadPayroll.html"><i class="fas fa-paper-plane"></i>Upload payroll</a>
+                        <a href="sendToAll.html"><i class="fas fa-paper-plane"></i>Upload payroll</a>
                     </li>
                 </ul>
             </li>
@@ -228,6 +259,10 @@ a.article:hover {
                 <form action="logout.php" method="POST">
                     <button type="submit" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i>Logout</button>
                 </form>
+                   <!-- <button class="btn btn-danger btn-rounded" onclick="confirmSignOut()">
+                        <i class="fas fa-sign-out-alt"></i> Log Out
+                    </button>
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Log out</a>-->
             </li>
         </ul>
 
