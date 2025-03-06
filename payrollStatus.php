@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Dashboard Admin</title>
+  <title>Dashboard Staff</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -194,35 +194,37 @@ a.article:hover {
 
         <ul class="list-unstyled components">
             <li class="active">
-                <a href="dashboard.html"> <i class="fas fa-box"> </i> Dashboard</a>
+                <a href="userDashboard.php"> <i class="fas fa-box"> </i> Dashboard</a>
             </li>
             <li>
+            <a href="payslip.php"> <i class="fas fa-file-invoice-dollar"></i> Payslip</a>
+        </li>
+        <li>
+            <a href="payrollStatus.php"> <i class="fas fa-chart-line"></i> Payroll Status</a>
+        </li>
+       <!--     <li>
                 <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                     <i class="fas fa-user-cog"></i> Administration
                 </a>
                 <ul class="collapse list-unstyled" id="pageSubmenu">
                     <li>
-                        <a href="editUserProfile.html"><i class="fas fa-user-edit"></i> View Users</a>
+                        <a href="viewUsers.php"><i class="fas fa-user-edit"></i> View Users</a>
                     </li>
                     <li>
-                        <a href="viewUsers.html"><i class="fas fa-users"></i> Add Admin</a>
+                        <a href="addAdmin.php"><i class="fas fa-users"></i> Add Admin</a>
                     </li>
                     <li>
-                        <a href="sendToAll.html"><i class="fas fa-paper-plane"></i>Upload payroll</a>
+                        <a href="uploadPayroll.php"><i class="fas fa-paper-plane"></i>Upload payroll</a>
                     </li>
                 </ul>
-            </li>
-            <li class="active">
-                <a href="viewSalaryDeductions.html"><i class="fas fa-money-bill-wave"></i> View Your Deductions</a>
+            </li>-->
+            <li>
+                <a href="viewSalaryDeductions.php"><i class="fas fa-money-bill-wave"></i> View Your Deductions</a>
             </li>
             <li>
                 <form action="logout.php" method="POST">
                     <button type="submit" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i>Logout</button>
                 </form>
-                   <!-- <button class="btn btn-danger btn-rounded" onclick="confirmSignOut()">
-                        <i class="fas fa-sign-out-alt"></i> Log Out
-                    </button>
-                <a href="#"><i class="fas fa-sign-out-alt"></i> Log out</a>-->
             </li>
         </ul>
 
@@ -245,14 +247,6 @@ a.article:hover {
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <p style="text-align: left; font-size: 60px; padding-left: 30px; color: white;"><span id="firstName">Loading...</span></p>
-                    <ul class="nav navbar-nav ml-auto">
-
-                        <ul class="list-unstyled CTAs">
-                          <li>
-                              <button class="btn btn-success btn-rounded">Edit Profile</button>
-                          </li>
-                      </ul>
-                    </ul>
                 </div>
             </div>
         </nav>
@@ -260,65 +254,11 @@ a.article:hover {
         <p><strong><b>Unit: </b></strong> <span id="unit">Loading...</span></p>
         <p><strong><b>Makerere Email: </b></strong> <span id="makerereEmail">Loading...</span></p>
         <p><strong><b>Personal Email: </b></strong> <span id="personalEmail">Loading...</span></p>
-
-        <div class="line"></div>
-
-        <h2>Request for PaySlip:</h2>
-        <div class="form-group">
-            <label for="monthSelect">Select Month</label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Select Month
-                    </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#" onclick="selectMonth('January')">January</a>
-                        <a class="dropdown-item" href="#" onclick="selectMonth('February')">February</a>
-                        <a class="dropdown-item" href="#" onclick="selectMonth('March')">March</a>
-                        <a class="dropdown-item" href="#" onclick="selectMonth('April')">April</a>
-                        <a class="dropdown-item" href="#" onclick="selectMonth('May')">May</a>
-                        <a class="dropdown-item" href="#" onclick="selectMonth('June')">June</a>
-                        <a class="dropdown-item" href="#" onclick="selectMonth('July')">July</a>
-                        <a class="dropdown-item" href="#" onclick="selectMonth('August')">August</a>
-                        <a class="dropdown-item" href="#" onclick="selectMonth('September')">September</a>
-                        <a class="dropdown-item" href="#" onclick="selectMonth('October')">October</a>
-                        <a class="dropdown-item" href="#" onclick="selectMonth('November')">November</a>
-                        <a class="dropdown-item" href="#" onclick="selectMonth('December')">December</a>
-                    </div>
-                </div>
-                <input type="text" class="form-control" id="monthSelect" placeholder="Select a month" readonly>
-            </div>
-            <label for="yearSelect">Select Year</label>
-        <div class="input-group">
-        <div class="input-group-prepend">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Select Year
-            </button>
-            <div class="dropdown-menu" id="yearDropdown">
-                <!-- Years will be generated here dynamically -->
-            </div>
-        </div>
-        <input type="text" class="form-control" id="yearSelect" placeholder="Select a year" readonly>
-    </div>
-        </div>
-        <div class="d-flex justify-content-between">
-    <ul class="list-unstyled CTAs m-0">
-        <li>
-            <form action="#" method="POST">
-                <button type="submit" class="btn btn-success"></i>Send to Email</button>
-            </form>
-        </li>
-    </ul>
-    <ul class="list-unstyled CTAs m-0">
-        <li>
-            <button class="btn btn-success btn-rounded">Download</button>
-        </li>
-    </ul>
-</div>
     </div>
 </div>
+
 <script>
-     $(document).ready(function () {
+         $(document).ready(function () {
         // Send to email functionality
         $(".btn.btn-success").click(function() {
             // Get the email address from the page (assumed to be loaded from the backend)
@@ -344,29 +284,12 @@ a.article:hover {
             });
         });
     });
-    function selectMonth(month) {
-    document.getElementById("monthSelect").value = month;
-    }
-  $(document).ready(function () {
+    $(document).ready(function () {
             $('#sidebarCollapse').on('click', function () {
                 $('#sidebar').toggleClass('active');
             });
         });
-          // Get the dropdown container
-    let yearDropdown = document.getElementById("yearDropdown");
-    
-    // Generate years from 2000 to 2050 dynamically
-    for (let year = 2013; year <= 2050; year++) {
-        let yearItem = document.createElement("a");
-        yearItem.classList.add("dropdown-item");
-        yearItem.href = "#";
-        yearItem.textContent = year;
-        yearItem.onclick = function () {
-            document.getElementById("yearSelect").value = year;
-        };
-        yearDropdown.appendChild(yearItem);
-    }
-    $(document).ready(function () {
+        $(document).ready(function () {
     // Fetch dashboard data from the server
     $.ajax({
         url: "fetchDashboardData.php",

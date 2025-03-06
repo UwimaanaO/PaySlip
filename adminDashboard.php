@@ -9,7 +9,7 @@ $timeout_duration = 600; // 10 minutes
 if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > $timeout_duration)) {
     session_unset(); // Unset session variables
     session_destroy(); // Destroy session
-    header("Location: index.html"); // Redirect to login page
+    header("Location: index.php"); // Redirect to login page
     exit();
 }
 
@@ -33,7 +33,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: index.html"); // Redirect to login page if not logged in
+    header("Location: index.php"); // Redirect to login page if not logged in
     exit();
 }
 ?>
@@ -234,7 +234,7 @@ a.article:hover {
 
         <ul class="list-unstyled components">
             <li class="active">
-                <a href="dashboard.html"> <i class="fas fa-box"> </i> Dashboard</a>
+                <a href="dashboard.php"> <i class="fas fa-box"> </i> Dashboard</a>
             </li>
             <li>
                 <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -242,18 +242,18 @@ a.article:hover {
                 </a>
                 <ul class="collapse list-unstyled" id="pageSubmenu">
                     <li>
-                        <a href="editUserProfile.html"><i class="fas fa-user-edit"></i> View Users</a>
+                        <a href="editUserProfile.php"><i class="fas fa-user-edit"></i> View Users</a>
                     </li>
                     <li>
-                        <a href="viewUsers.html"><i class="fas fa-users"></i> Add Admin</a>
+                        <a href="viewUsers.php"><i class="fas fa-users"></i> Add Admin</a>
                     </li>
                     <li>
-                        <a href="sendToAll.html"><i class="fas fa-paper-plane"></i>Upload payroll</a>
+                        <a href="sendToAll.php"><i class="fas fa-paper-plane"></i>Upload payroll</a>
                     </li>
                 </ul>
             </li>
             <li class="active">
-                <a href="viewSalaryDeductions.html"><i class="fas fa-money-bill-wave"></i> View Your Deductions</a>
+                <a href="viewSalaryDeductions.php"><i class="fas fa-money-bill-wave"></i> View Your Deductions</a>
             </li>
             <li>
                 <form action="logout.php" method="POST">

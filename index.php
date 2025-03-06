@@ -102,7 +102,7 @@
 
     <!-- Forgot Password and Footer -->
     <p style="color: #006400; text-align: center;">Forgot your password? <a href="https://sso.mak.ac.ug/recover/" target="_blank"><u>Reset</u></a></p>
-    <p style="color: #006400; text-align: center;">Have no account <a href="register.html" target="_blank"><u>Register</u></a></p>
+    <p style="color: #006400; text-align: center;">Have no account <a href="register.php" target="_blank"><u>Register</u></a></p>
     <p style="text-align: center;"><strong>@Makerere University 2025</strong></p>
 </div>
 

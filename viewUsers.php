@@ -194,7 +194,7 @@ a.article:hover {
 
         <ul class="list-unstyled components">
             <li class="active">
-                <a href="dashboard.html"> <i class="fas fa-box"> </i> Dashboard</a>
+                <a href="adminDashboard.php"> <i class="fas fa-box"> </i> Dashboard</a>
             </li>
             <li>
                 <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -202,18 +202,18 @@ a.article:hover {
                 </a>
                 <ul class="collapse list-unstyled" id="pageSubmenu">
                     <li>
-                        <a href="viewUsers.html"><i class="fas fa-user-edit"></i> View Users</a>
+                        <a href="viewUsers.php"><i class="fas fa-user-edit"></i> View Users</a>
                     </li>
                     <li>
-                        <a href="addAdmin.html"><i class="fas fa-users"></i> Add Admin</a>
+                        <a href="addAdmin.php"><i class="fas fa-users"></i> Add Admin</a>
                     </li>
                     <li>
-                        <a href="uploadPayroll.html"><i class="fas fa-paper-plane"></i>Upload payroll</a>
+                        <a href="uploadPayroll.php"><i class="fas fa-paper-plane"></i>Upload payroll</a>
                     </li>
                 </ul>
             </li>
             <li class="active">
-                <a href="viewSalaryDeductions.html"><i class="fas fa-money-bill-wave"></i> View Your Deductions</a>
+                <a href="viewSalaryDeductions.php"><i class="fas fa-money-bill-wave"></i> View Your Deductions</a>
             </li>
             <li>
                 <form action="logout.php" method="POST">

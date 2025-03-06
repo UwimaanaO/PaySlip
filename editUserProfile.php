@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Dashboard Staff</title>
+  <title>Dashboard Admin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -194,43 +194,37 @@ a.article:hover {
 
         <ul class="list-unstyled components">
             <li class="active">
-                <a href="userDashboard.php"> <i class="fas fa-box"> </i> Dashboard</a>
+                <a href="dashboard.php"> <i class="fas fa-box"> </i> Dashboard</a>
             </li>
             <li>
-            <a href="payslip.html"> <i class="fas fa-file-invoice-dollar"></i> Payslip</a>
-        </li>
-        <li>
-            <a href="payrollStatus.html"> <i class="fas fa-chart-line"></i> Payroll Status</a>
-        </li>
-       <!--     <li>
                 <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                     <i class="fas fa-user-cog"></i> Administration
                 </a>
-                <ul class="collapse list-unstyled" id="pageSubmenu">
+                <ul class="collapse list-styled" id="pageSubmenu">
                     <li>
-                        <a href="viewUsers.php"><i class="fas fa-user-edit"></i> View Users</a>
+                        <a href="editUserProfile.php"><i class="fas fa-user-edit"></i> Edit User Profile</a>
                     </li>
                     <li>
-                        <a href="addAdmin.html"><i class="fas fa-users"></i> Add Admin</a>
+                        <a href="viewUsers.php"><i class="fas fa-users"></i> View Users</a>
                     </li>
                     <li>
-                        <a href="uploadPayroll.html"><i class="fas fa-paper-plane"></i>Upload payroll</a>
+                        <a href="sendToAll.php"><i class="fas fa-paper-plane"></i> Send to All</a>
                     </li>
                 </ul>
-            </li>-->
-            <li>
-                <a href="viewSalaryDeductions.html"><i class="fas fa-money-bill-wave"></i> View Your Deductions</a>
             </li>
             <li>
-                <form action="logout.php" method="POST">
-                    <button type="submit" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i>Logout</button>
-                </form>
+                <a href="#"><i class="fas fa-money-bill-wave"></i> View Your Deductions</a>
+            </li>
+            <li>
+                    <button class="btn btn-danger btn-rounded" onclick="confirmSignOut()">
+                        <i class="fas fa-sign-out-alt"></i> Log Out
+                    </button>
+                <!--<a href="#"><i class="fas fa-sign-out-alt"></i> Log out</a>-->
             </li>
         </ul>
 
 
     </nav>
-
 
     <!-- Page Content  -->
     <div id="content">

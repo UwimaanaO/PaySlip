@@ -28,7 +28,7 @@ $sql = "INSERT INTO users (firstName, lastName, ippsNumber, unit, makerereEmail,
 
 if ($conn->query($sql) === TRUE) {
     // Step 4: Redirect to the index page after successful registration
-    header("Location: index.html");
+    header("Location: index.php");
     exit(); // Make sure the script stops executing after redirect
 } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
