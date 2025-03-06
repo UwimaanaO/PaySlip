@@ -184,12 +184,12 @@ a.article:hover {
 
 </head>
 <body>
-  <div class="wrapper">
+<div class="wrapper">
     <!-- Sidebar  -->
     <nav id="sidebar">
         <div class="sidebar-header">
           <img src="makerere_logo-removebg-preview.png" class="mx-auto d-block" style="width:80px">
-          <div class="line"></div>
+          <hr>
         </div>
 
         <ul class="list-unstyled components">
@@ -212,7 +212,7 @@ a.article:hover {
                     </li>
                 </ul>
             </li>
-            <li class="active">
+            <li>
                 <a href="viewSalaryDeductions.php"><i class="fas fa-money-bill-wave"></i> View Your Deductions</a>
             </li>
             <li>

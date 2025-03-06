@@ -184,17 +184,17 @@ a.article:hover {
 
 </head>
 <body>
-  <div class="wrapper">
+<div class="wrapper">
     <!-- Sidebar  -->
     <nav id="sidebar">
         <div class="sidebar-header">
           <img src="makerere_logo-removebg-preview.png" class="mx-auto d-block" style="width:80px">
-          <div class="line"></div>
+          <hr>
         </div>
 
         <ul class="list-unstyled components">
             <li class="active">
-                <a href="dashboard.php"> <i class="fas fa-box"> </i> Dashboard</a>
+                <a href="adminDashboard.php"> <i class="fas fa-box"> </i> Dashboard</a>
             </li>
             <li>
                 <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -202,17 +202,17 @@ a.article:hover {
                 </a>
                 <ul class="collapse list-unstyled" id="pageSubmenu">
                     <li>
-                        <a href="editUserProfile.php"><i class="fas fa-user-edit"></i> View Users</a>
+                        <a href="viewUsers.php"><i class="fas fa-user-edit"></i> View Users</a>
                     </li>
                     <li>
-                        <a href="viewUsers.php"><i class="fas fa-users"></i> Add Admin</a>
+                        <a href="addAdmin.php"><i class="fas fa-users"></i> Add Admin</a>
                     </li>
                     <li>
-                        <a href="sendToAll.php"><i class="fas fa-paper-plane"></i>Upload payroll</a>
+                        <a href="uploadPayroll.php"><i class="fas fa-paper-plane"></i>Upload payroll</a>
                     </li>
                 </ul>
             </li>
-            <li class="active">
+            <li>
                 <a href="viewSalaryDeductions.php"><i class="fas fa-money-bill-wave"></i> View Your Deductions</a>
             </li>
             <li>
@@ -232,6 +232,8 @@ a.article:hover {
     <!-- Page Content  -->
     <div id="content">
 
+    <div id="content">
+
         <nav class="navbar navbar-expand-lg navbar-light bg-black">
             <div class="container-fluid">
 
@@ -244,150 +246,25 @@ a.article:hover {
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                  <p style="text-align: left; font-size: 60px; padding-left: 30px; color: white;"><span id="firstName">Loading...</span></p>
-                    <ul class="nav navbar-nav ml-auto">
-
-                        <ul class="list-unstyled CTAs">
-                          <li>
-                              <button class="btn btn-success btn-rounded">Edit Profile</button>
-                          </li>
-                      </ul>
-                    </ul>
+                  <p style="text-align: left; font-size: 60px; padding-left: 30px; color: white;"><span>Upload Payroll (PDF Only, Max: 3MB)</span></p>
                 </div>
             </div>
         </nav>
-        <p><strong><b>IPPS NO: </b></strong> <span id="ippsNo">Loading...</span></p>
-        <p><strong><b>Unit: </b></strong> <span id="unit">Loading...</span></p>
-        <p><strong><b>Makerere Email: </b></strong> <span id="makerereEmail">Loading...</span></p>
-        <p><strong><b>Personal Email: </b></strong> <span id="personalEmail">Loading...</span></p>
-
-        <div class="line"></div>
-
-        <h2>Request for PaySlip:</h2>
-        <div class="form-group">
-            <label for="monthSelect">Select Month</label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Select Month
-                    </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#" onclick="selectMonth('January')">January</a>
-                        <a class="dropdown-item" href="#" onclick="selectMonth('February')">February</a>
-                        <a class="dropdown-item" href="#" onclick="selectMonth('March')">March</a>
-                        <a class="dropdown-item" href="#" onclick="selectMonth('April')">April</a>
-                        <a class="dropdown-item" href="#" onclick="selectMonth('May')">May</a>
-                        <a class="dropdown-item" href="#" onclick="selectMonth('June')">June</a>
-                        <a class="dropdown-item" href="#" onclick="selectMonth('July')">July</a>
-                        <a class="dropdown-item" href="#" onclick="selectMonth('August')">August</a>
-                        <a class="dropdown-item" href="#" onclick="selectMonth('September')">September</a>
-                        <a class="dropdown-item" href="#" onclick="selectMonth('October')">October</a>
-                        <a class="dropdown-item" href="#" onclick="selectMonth('November')">November</a>
-                        <a class="dropdown-item" href="#" onclick="selectMonth('December')">December</a>
-                    </div>
-                </div>
-                <input type="text" class="form-control" id="monthSelect" placeholder="Select a month" readonly>
+        <div class="container mt-5">
+        <form action="uploadPayrollHandler.php" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="payrollFile">Choose Payroll File (PDF only)</label>
+                <input type="file" class="form-control-file" name="payrollFile" id="payrollFile" accept=".pdf" required>
             </div>
-            <label for="yearSelect">Select Year</label>
-        <div class="input-group">
-        <div class="input-group-prepend">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Select Year
-            </button>
-            <div class="dropdown-menu" id="yearDropdown">
-                <!-- Years will be generated here dynamically -->
-            </div>
-        </div>
-        <input type="text" class="form-control" id="yearSelect" placeholder="Select a year" readonly>
+            <button type="submit" class="btn btn-success">Upload</button>
+        </form>
     </div>
-        </div>
-        <div class="d-flex justify-content-between">
-    <ul class="list-unstyled CTAs m-0">
-        <li>
-            <form action="#" method="POST">
-                <button type="submit" class="btn btn-success"></i>Send to Email</button>
-            </form>
-        </li>
-    </ul>
-    <ul class="list-unstyled CTAs m-0">
-        <li>
-            <button class="btn btn-success btn-rounded">Download</button>
-        </li>
-    </ul>
-</div>
-    </div>
-</div>
-<script>
-     $(document).ready(function () {
-        // Send to email functionality
-        $(".btn.btn-success").click(function() {
-            // Get the email address from the page (assumed to be loaded from the backend)
-            let userEmail = $("#makerereEmail").text();
-
-            // Send an AJAX POST request to send the email
-            $.ajax({
-                url: "sendEmail.php",
-                method: "POST",
-                data: { email: userEmail },
-                dataType: "json",
-                success: function (response) {
-                    if (response.status === "success") {
-                        alert("Email sent successfully!");
-                    } else {
-                        alert("Error: " + response.message);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error sending email:", error);
-                    alert("An error occurred while sending the email.");
-                }
-            });
-        });
-    });
-    function selectMonth(month) {
-    document.getElementById("monthSelect").value = month;
-    }
-  $(document).ready(function () {
+    <script>
+            $(document).ready(function () {
             $('#sidebarCollapse').on('click', function () {
                 $('#sidebar').toggleClass('active');
             });
         });
-          // Get the dropdown container
-    let yearDropdown = document.getElementById("yearDropdown");
-    
-    // Generate years from 2000 to 2050 dynamically
-    for (let year = 2013; year <= 2050; year++) {
-        let yearItem = document.createElement("a");
-        yearItem.classList.add("dropdown-item");
-        yearItem.href = "#";
-        yearItem.textContent = year;
-        yearItem.onclick = function () {
-            document.getElementById("yearSelect").value = year;
-        };
-        yearDropdown.appendChild(yearItem);
-    }
-    $(document).ready(function () {
-    // Fetch dashboard data from the server
-    $.ajax({
-        url: "fetchDashboardData.php",
-        method: "GET",
-        dataType: "json",
-        success: function (response) {
-            if (response) {
-                $("#ippsNo").text(response.ippsNumber);
-                $("#unit").text(response.unit);
-                $("#makerereEmail").text(response.makerereEmail);
-                $("#personalEmail").text(response.personalEmail);
-                $("#firstName").text(response.firstName);
-            } else {
-                console.log("No data received.");
-            }
-        },
-        error: function (xhr, status, error) {
-            console.error("Error fetching data:", error);
-        }
-    });
-});
-</script>
+    </script>
 </body>
 </html>
