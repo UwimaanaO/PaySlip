@@ -1,7 +1,57 @@
+<?php
+session_start();
+require_once 'dbConnection.php';
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Fetch user details if IPPS Number is provided
+$user = null;
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['fetchUser'])) {
+    $ippsNumber = trim($_POST['ippsNumber']);
+
+    if (!empty($ippsNumber)) {
+        $sql = "SELECT * FROM users WHERE ippsNumber = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $ippsNumber);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows > 0) {
+            $user = $result->fetch_assoc();
+        } else {
+            echo "<script>alert('User not found!');</script>";
+        }
+    } else {
+        echo "<script>alert('Please enter an IPPS Number!');</script>";
+    }
+}
+
+// Update role if submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['updateRole'])) {
+    $ippsNumber = $_POST['ippsNumber'];
+    $newRole = $_POST['role'];
+
+    if (!empty($ippsNumber) && !empty($newRole)) {
+        $sql = "UPDATE users SET role = ? WHERE ippsNumber = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $newRole, $ippsNumber);
+        if ($stmt->execute()) {
+            echo "<script>alert('User role updated successfully!');</script>";
+        } else {
+            echo "<script>alert('Failed to update role!');</script>";
+        }
+    } else {
+        echo "<script>alert('Missing data!');</script>";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Dashboard Admin</title>
+<html>
+<head>
+  <title>Add Admin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -184,7 +234,7 @@ a.article:hover {
 
 </head>
 <body>
-<div class="wrapper">
+  <div class="wrapper">
     <!-- Sidebar  -->
     <nav id="sidebar">
         <div class="sidebar-header">
@@ -230,15 +280,24 @@ a.article:hover {
     </nav>
 
     <!-- Page Content  -->
-    <div class="container mt-5">
-    <h2 class="mb-4">Update User Role</h2>
+    <div id="content">
 
-    <!-- Display messages -->
-    <?php if (!empty($message)) { ?>
-        <div class="alert alert-info"><?php echo $message; ?></div>
-    <?php } ?>
+        <nav class="navbar navbar-expand-lg navbar-light bg-black">
+            <div class="container-fluid">
 
-    <!-- Form to Fetch User Profile -->
+                <button type="button" id="sidebarCollapse" class="btn btn-info">
+                    <i class="fas fa-align-left"></i>
+                    <span></span>
+                </button>
+                <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fas fa-align-justify"></i>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <p style="text-align: left; font-size: 60px; padding-left: 30px; color: white;">Update User Role</p>
+                </div>
+            </div>
+        </nav>
     <form method="POST" action="">
         <div class="form-group">
             <label>Enter IPPS Number:</label>
@@ -247,60 +306,32 @@ a.article:hover {
         <button type="submit" name="fetchUser" class="btn btn-primary">Fetch User</button>
     </form>
 
-    <!-- Display user profile if found -->
-    <?php if ($user) { ?>
+    <?php if (!empty($user)) { ?>
         <hr>
         <h4>User Details</h4>
-        <p><strong>Name:</strong> <?php echo $user['first_name'] . " " . $user['last_name']; ?></p>
-        <p><strong>Email:</strong> <?php echo $user['email']; ?></p>
-        <p><strong>Current Role:</strong> <?php echo $user['role']; ?></p>
+        <p><strong>Name:</strong> <?= htmlspecialchars($user['firstName'] . " " . $user['lastName']); ?></p>
+        <p><strong>Makerere Email:</strong> <?= htmlspecialchars($user['makerereEmail']); ?></p>
+        <p><strong>Current Role:</strong> <?= htmlspecialchars($user['role']); ?></p>
 
         <!-- Form to Update Role -->
         <form method="POST" action="">
-            <input type="hidden" name="ippsNumber" value="<?php echo htmlspecialchars($ippsNumber); ?>">
+            <input type="hidden" name="ippsNumber" value="<?= htmlspecialchars($user['ippsNumber']); ?>">
             <div class="form-group">
                 <label>Select New Role:</label>
                 <select name="role" class="form-control">
-                    <option value="admin" <?php if ($user['role'] == 'admin') echo 'selected'; ?>>Admin</option>
-                    <option value="staff" <?php if ($user['role'] == 'staff') echo 'selected'; ?>>Staff</option>
+                    <option value="admin" <?= $user['role'] == 'admin' ? 'selected' : ''; ?>>Admin</option>
+                    <option value="user" <?= $user['role'] == 'user' ? 'selected' : ''; ?>>Staff</option>
                 </select>
             </div>
             <button type="submit" name="updateRole" class="btn btn-success">Update Role</button>
         </form>
     <?php } ?>
-</div>
-</div>
-<script>
-$(document).ready(function () {
-    $("#updateRoleBtn").click(function () {
-        let ippsNo = $("#ippsNoSelect").val();
-        let newRole = $("#roleSelect").val();
-
-        if (ippsNo === "") {
-            alert("Please enter an IPPS number.");
-            return;
-        }
-
-        $.ajax({
-            url: "addAdminUpdateRole.php",
-            method: "POST",
-            data: { ipps_no: ippsNo, role: newRole },
-            dataType: "json",
-            success: function (response) {
-                if (response.status === "success") {
-                    alert("Role updated successfully!");
-                } else {
-                    alert("Error: " + response.message);
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error("Error updating role:", error);
-                alert("An error occurred while updating the role.");
-            }
+    <script>
+          $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
         });
-    });
-});
-
-</script>
+    </script>
 </body>
 </html>
