@@ -43,7 +43,7 @@ if ($result && $result->num_rows > 0) {
         echo "<td>" . htmlspecialchars($row['unit']) . "</td>";
         echo "<td>" . htmlspecialchars($row['makerereEmail']) . "</td>";
         echo "<td>" . htmlspecialchars($row['personalEmail']) . "</td>";
-        echo "<td><button class='btn btn-warning'>Edit</button></td>";
+        echo "<td><a href='editUser.php?id=" . htmlspecialchars($row['id']) . "' class='btn btn-warning'>Edit</a></td>";
         echo "</tr>";
     }
 } else {

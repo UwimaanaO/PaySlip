@@ -1,7 +1,57 @@
-<!DOCTYPE html>
+<?php
+session_start(); // Start the session to store message
+
+$servername = "localhost";
+$username = "root"; // Your MySQL username
+$password = ""; // Your MySQL password
+$dbname = "payslipproject"; // Your database name
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $id = $_POST['id'];
+    $ippsNumber = $_POST['ippsNumber'];
+    $firstName = $_POST['firstName'];
+    $lastName = $_POST['lastName'];
+    $unit = $_POST['unit'];
+    $makerereEmail = $_POST['makerereEmail'];
+    $personalEmail = $_POST['personalEmail'];
+
+    // Update query that does not touch the role column
+    $sql = "UPDATE users 
+            SET ippsNumber='$ippsNumber', firstName='$firstName', lastName='$lastName', unit='$unit', 
+                makerereEmail='$makerereEmail', personalEmail='$personalEmail' 
+            WHERE id='$id'";
+
+    if ($conn->query($sql) === TRUE) {
+        $_SESSION['message'] = "User updated successfully!";
+        $_SESSION['message_type'] = "success";
+    } else {
+        $_SESSION['message'] = "Failed to update user.";
+        $_SESSION['message_type'] = "error";
+    }
+
+    header("Location: viewUsers.php");
+    exit();
+}
+
+$id = $_GET['id'];
+$sql = "SELECT * FROM users WHERE id = '$id'";
+$result = $conn->query($sql);
+$user = $result->fetch_assoc();
+
+$conn->close();
+?>
+
 <html>
 <head>
-  <title>Dashboard Admin</title>
+  <title>View Users</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -184,7 +234,7 @@ a.article:hover {
 
 </head>
 <body>
-<div class="wrapper">
+  <div class="wrapper">
     <!-- Sidebar  -->
     <nav id="sidebar">
         <div class="sidebar-header">
@@ -213,7 +263,7 @@ a.article:hover {
                 </ul>
             </li>
             <li>
-                <a href="viewSalaryDeductions.php"><i class="fas fa-money-bill-wave"></i> View Your Deductions</a>
+                <a href="viewAdminSalaryDeductions.php"><i class="fas fa-money-bill-wave"></i> View Your Deductions</a>
             </li>
             <li>
                 <form action="logout.php" method="POST">
@@ -228,50 +278,78 @@ a.article:hover {
 
 
     </nav>
+        <!-- Page Content  -->
+        <div id="content">
 
-    <!-- Page Content  -->
-    <div id="content">
+<nav class="navbar navbar-expand-lg navbar-light bg-black">
+    <div class="container-fluid">
 
-    <div id="content">
+        <button type="button" id="sidebarCollapse" class="btn btn-info">
+            <i class="fas fa-align-left"></i>
+            <span></span>
+        </button>
+        <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-align-justify"></i>
+        </button>
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-black">
-            <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <p style="text-align: left; font-size: 60px; padding-left: 30px; color: white;">Edit User</p>
+        </div>
+    </div>
+</nav>
+        <!-- Display Success or Failure Messages -->
+        <?php
+        if (isset($_SESSION['message'])) {
+            $message = $_SESSION['message'];
+            $message_type = $_SESSION['message_type'];
 
-                <button type="button" id="sidebarCollapse" class="btn btn-info">
-                    <i class="fas fa-align-left"></i>
-                    <span></span>
-                </button>
-                <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="fas fa-align-justify"></i>
-                </button>
+            if ($message_type == "success") {
+                echo "<div class='alert alert-success'>$message</div>";
+            } else {
+                echo "<div class='alert alert-danger'>$message</div>";
+            }
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                  <p style="text-align: left; font-size: 60px; padding-left: 30px; color: white;"><span>Upload Payroll (PDF Only, Max: 3MB)</span></p>
-                </div>
-            </div>
-        </nav>
-        <div class="container mt-5">
-        <form action="uploadPayrollHandler.php" method="POST" enctype="multipart/form-data">
+            unset($_SESSION['message']);
+            unset($_SESSION['message_type']);
+        }
+        ?>
+
+        <h2>Edit User</h2>
+        <form method="POST" action="editUser.php">
+            <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
             <div class="form-group">
-                <label for="payrollFile">Choose Payroll File (PDF only)</label>
-                <input type="file" class="form-control-file" name="payrollFile" id="payrollFile" accept=".pdf" required>
+                <label for="ippsNumber">IPPS Number</label>
+                <input type="text" class="form-control" id="ippsNumber" name="ippsNumber" value="<?php echo $user['ippsNumber']; ?>" required>
             </div>
-            <button type="submit" class="btn btn-success">Upload</button>
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" class="form-control" id="firstName" name="firstName" value="<?php echo $user['firstName']; ?>" required>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" class="form-control" id="lastName" name="lastName" value="<?php echo $user['lastName']; ?>" required>
+            </div>
+            <div class="form-group">
+                <label for="unit">Unit</label>
+                <input type="text" class="form-control" id="unit" name="unit" value="<?php echo $user['unit']; ?>" required>
+            </div>
+            <div class="form-group">
+                <label for="makerereEmail">Makerere Email</label>
+                <input type="email" class="form-control" id="makerereEmail" name="makerereEmail" value="<?php echo $user['makerereEmail']; ?>" required>
+            </div>
+            <div class="form-group">
+                <label for="personalEmail">Personal Email</label>
+                <input type="email" class="form-control" id="personalEmail" name="personalEmail" value="<?php echo $user['personalEmail']; ?>" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
         </form>
     </div>
     <script>
-            $(document).ready(function () {
+                  $(document).ready(function () {
             $('#sidebarCollapse').on('click', function () {
                 $('#sidebar').toggleClass('active');
             });
         });
-        document.querySelector("form").onsubmit = function (e) {
-    var fileInput = document.getElementById("payrollFile");
-    if (fileInput.files[0].size > 3 * 1024 * 1024) {  // 3MB limit
-        alert("File size exceeds the 3MB limit.");
-        e.preventDefault();
-    }
-};
-    </script>
+</script>
 </body>
 </html>

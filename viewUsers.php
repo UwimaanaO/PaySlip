@@ -1,3 +1,6 @@
+<?php
+session_start(); // Start the session to access session variables
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -184,7 +187,7 @@ a.article:hover {
 
 </head>
 <body>
-<div class="wrapper">
+  <div class="wrapper">
     <!-- Sidebar  -->
     <nav id="sidebar">
         <div class="sidebar-header">
@@ -219,40 +222,65 @@ a.article:hover {
                 <form action="logout.php" method="POST">
                     <button type="submit" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i>Logout</button>
                 </form>
+                   <!-- <button class="btn btn-danger btn-rounded" onclick="confirmSignOut()">
+                        <i class="fas fa-sign-out-alt"></i> Log Out
+                    </button>
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Log out</a>-->
             </li>
         </ul>
 
 
     </nav>
+        <!-- Page Content  -->
+        <div id="content">
 
-    <!-- Page Content  -->
-    <div id="content">
+<nav class="navbar navbar-expand-lg navbar-light bg-black">
+    <div class="container-fluid">
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-black">
-            <div class="container-fluid">
+        <button type="button" id="sidebarCollapse" class="btn btn-info">
+            <i class="fas fa-align-left"></i>
+            <span></span>
+        </button>
+        <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-align-justify"></i>
+        </button>
 
-                <button type="button" id="sidebarCollapse" class="btn btn-info">
-                    <i class="fas fa-align-left"></i>
-                    <span></span>
-                </button>
-                <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="fas fa-align-justify"></i>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                  <p style="text-align: left; font-size: 60px; padding-left: 30px; color: white;">Payroll Users</p>
-                </div>
-            </div>
-        </nav>
-        <form method="POST" action="viewUsers.php">
-    <div class="form-group">
-        <input type="text" class="form-control" name="search" placeholder="Search by name..." required>
-        <button type="submit" class="btn btn-primary mt-2">Search</button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <p style="text-align: left; font-size: 60px; padding-left: 30px; color: white;">Edit User</p>
+        </div>
     </div>
+</nav>
+    <!-- Display Success or Failure Messages -->
+    <?php
+    if (isset($_SESSION['message'])) {
+        $message = $_SESSION['message'];
+        $message_type = $_SESSION['message_type'];
+
+        // Display the message
+        if ($message_type == "success") {
+            echo "<div class='alert alert-success'>$message</div>";
+        } else {
+            echo "<div class='alert alert-danger'>$message</div>";
+        }
+
+        // Clear the message after displaying it
+        unset($_SESSION['message']);
+        unset($_SESSION['message_type']);
+    }
+    ?>
+
+    <!-- Search Form -->
+    <form method="POST" action="viewUsers.php">
+        <div class="form-group">
+            <input type="text" class="form-control" name="search" placeholder="Search by name..." required>
+            <button type="submit" class="btn btn-primary mt-2">Search</button>
+        </div>
     </form>
-        <table class="table">
-            <thead class="thead-dark">
-              <tr>
+
+    <!-- Users Table -->
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
                 <th scope="col">No</th>
                 <th scope="col">IPPS Number</th>
                 <th scope="col">First Name</th>
@@ -261,13 +289,19 @@ a.article:hover {
                 <th scope="col">Makerere Email</th>
                 <th scope="col">Personal Email</th>
                 <th scope="col"><b>Actions</b></th>
-              </tr>
-            </thead>
-            <tbody>
-                <?php include 'fetchUsersData.php'; ?>
-              </tbody>
-          </table>
-    </div>
+            </tr>
+        </thead>
+        <tbody>
+            <?php include 'fetchUsersData.php'; ?>
+        </tbody>
+    </table>
 </div>
+<script>
+                  $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+        });
+</script>
 </body>
 </html>
