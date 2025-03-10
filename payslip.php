@@ -246,19 +246,65 @@ a.article:hover {
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                  <p style="text-align: left; font-size: 60px; padding-left: 30px; color: white;"><span id="firstName">Loading...</span></p>
+                  <p style="text-align: left; font-size: 60px; padding-left: 30px; color: white;"><span>Request for PaySlip</span></p>
                 </div>
             </div>
         </nav>
-        <p><strong><b>IPPS NO: </b></strong> <span id="ippsNo">Loading...</span></p>
-        <p><strong><b>Unit: </b></strong> <span id="unit">Loading...</span></p>
-        <p><strong><b>Makerere Email: </b></strong> <span id="makerereEmail">Loading...</span></p>
-        <p><strong><b>Personal Email: </b></strong> <span id="personalEmail">Loading...</span></p>
+        <div class="form-group">
+            <label for="monthSelect">Select Month</label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Select Month
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#" onclick="selectMonth('January')">January</a>
+                        <a class="dropdown-item" href="#" onclick="selectMonth('February')">February</a>
+                        <a class="dropdown-item" href="#" onclick="selectMonth('March')">March</a>
+                        <a class="dropdown-item" href="#" onclick="selectMonth('April')">April</a>
+                        <a class="dropdown-item" href="#" onclick="selectMonth('May')">May</a>
+                        <a class="dropdown-item" href="#" onclick="selectMonth('June')">June</a>
+                        <a class="dropdown-item" href="#" onclick="selectMonth('July')">July</a>
+                        <a class="dropdown-item" href="#" onclick="selectMonth('August')">August</a>
+                        <a class="dropdown-item" href="#" onclick="selectMonth('September')">September</a>
+                        <a class="dropdown-item" href="#" onclick="selectMonth('October')">October</a>
+                        <a class="dropdown-item" href="#" onclick="selectMonth('November')">November</a>
+                        <a class="dropdown-item" href="#" onclick="selectMonth('December')">December</a>
+                    </div>
+                </div>
+                <input type="text" class="form-control" id="monthSelect" placeholder="Select a month" readonly>
+            </div>
+            <label for="yearSelect">Select Year</label>
+        <div class="input-group">
+        <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Select Year
+            </button>
+            <div class="dropdown-menu" id="yearDropdown">
+                <!-- Years will be generated here dynamically -->
+            </div>
+        </div>
+        <input type="text" class="form-control" id="yearSelect" placeholder="Select a year" readonly>
+    </div>
+        </div>
+        <div class="d-flex justify-content-between">
+    <ul class="list-unstyled CTAs m-0">
+        <li>
+            <form action="#" method="POST">
+                <button type="submit" class="btn btn-success"></i> Preview And Download </button>
+            </form>
+        </li>
+    </ul>
+    <ul class="list-unstyled CTAs m-0">
+        <li>
+            <button class="btn btn-success btn-rounded"> Send To Email </button>
+        </li>
+    </ul>
+</div>
     </div>
 </div>
-
 <script>
-         $(document).ready(function () {
+     $(document).ready(function () {
         // Send to email functionality
         $(".btn.btn-success").click(function() {
             // Get the email address from the page (assumed to be loaded from the backend)
@@ -284,33 +330,28 @@ a.article:hover {
             });
         });
     });
-    $(document).ready(function () {
+    function selectMonth(month) {
+    document.getElementById("monthSelect").value = month;
+    }
+  $(document).ready(function () {
             $('#sidebarCollapse').on('click', function () {
                 $('#sidebar').toggleClass('active');
             });
         });
-        $(document).ready(function () {
-    // Fetch dashboard data from the server
-    $.ajax({
-        url: "fetchDashboardData.php",
-        method: "GET",
-        dataType: "json",
-        success: function (response) {
-            if (response) {
-                $("#ippsNo").text(response.ippsNumber);
-                $("#unit").text(response.unit);
-                $("#makerereEmail").text(response.makerereEmail);
-                $("#personalEmail").text(response.personalEmail);
-                $("#firstName").text(response.firstName);
-            } else {
-                console.log("No data received.");
-            }
-        },
-        error: function (xhr, status, error) {
-            console.error("Error fetching data:", error);
-        }
-    });
-});
+          // Get the dropdown container
+    let yearDropdown = document.getElementById("yearDropdown");
+    
+    // Generate years from 2000 to 2050 dynamically
+    for (let year = 2013; year <= 2050; year++) {
+        let yearItem = document.createElement("a");
+        yearItem.classList.add("dropdown-item");
+        yearItem.href = "#";
+        yearItem.textContent = year;
+        yearItem.onclick = function () {
+            document.getElementById("yearSelect").value = year;
+        };
+        yearDropdown.appendChild(yearItem);
+    }
 </script>
 </body>
 </html>

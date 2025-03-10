@@ -253,7 +253,7 @@ a.article:hover {
                 </ul>
             </li>
             <li>
-                <a href="viewSalaryDeductions.php"><i class="fas fa-money-bill-wave"></i> View Your Deductions</a>
+                <a href="viewAdminSalaryDeductions.php"><i class="fas fa-money-bill-wave"></i> View Your Deductions</a>
             </li>
             <li>
                 <form action="logout.php" method="POST">
